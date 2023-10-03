@@ -1,4 +1,6 @@
 import flet as ft
+import requests, json
+
 def main(pagina):
   pagina.scroll = ft.ScrollMode.ALWAYS
   texto_inicial = ft.Text("Raul's Zap")
@@ -9,11 +11,16 @@ def main(pagina):
   def enviar_mensagem_tunel(mensagem):
     #TESTAR SE O TEXTO NAO ESTA VAZIO
     if mensagem['texto'] != "":
+      hora_servidor = requests.get('https://roundbeigemodularity.raulcastro11.repl.co/datahora')
+      data_hora = []
+      for item in hora_servidor:
+        data_hora.append(item)
+      jason_carregado = json.loads(data_hora[0].decode('utf-8'))
       #TESTAR SE E MENSAGEM NORMAL OU A DE BOAS VINDAS 
       if mensagem["tipo"] == "msg":
         #adicionar mensagem no chat
         chat.controls.append(
-        ft.Text(f"Sr.{mensagem['usuario']}: {mensagem['texto']}"))
+        ft.Text(f"[{jason_carregado.get('hora')}:{jason_carregado.get('minuto')}] - Sr.{mensagem['usuario']} : {mensagem['texto']}"))
         #limpar o campo mensagem
         campo_mensagem.value = ""
         campo_mensagem.focus()
@@ -21,7 +28,7 @@ def main(pagina):
       else:
         #adicionar mensagem no chat
         chat.controls.append(
-        ft.Text(f"Sr.{mensagem['usuario']} acaba de se juntar a conversa !",size=12,italic=True,color=ft.colors.DEEP_ORANGE_500))
+        ft.Text(f"[{jason_carregado.get('hora')}:{jason_carregado.get('minuto')}] - Sr.{mensagem['usuario']} acaba de se juntar a conversa !",size=12,italic=True,color=ft.colors.DEEP_ORANGE_500))
         #limpar o campo mensagem
         campo_mensagem.value = ""
         campo_mensagem.focus()

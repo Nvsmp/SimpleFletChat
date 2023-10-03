@@ -4,7 +4,6 @@ import requests, json
 def main(pagina):
   pagina.scroll = ft.ScrollMode.ALWAYS
   texto_inicial = ft.Text("Raul's Zap")
-  nome_usuario = ft.TextField()
   chat = ft.Column()
   
   #FUNCAO DO PUBSUB
@@ -66,6 +65,8 @@ def main(pagina):
       campo_mensagem.focus()
       pagina.update()
 
+  nome_usuario = ft.TextField(on_submit=entrar_popup)
+
   #POPUP DE ACESSO
   popup = ft.AlertDialog(
       open=False,
@@ -80,6 +81,7 @@ def main(pagina):
     pagina.dialog = popup
     popup.open = True
     pagina.update()
+    nome_usuario.focus()
 
   #LAYOUT DE INICIO DA FUNCAO MAIN
   botao_iniciar = ft.ElevatedButton("Iniciar chat", on_click=entrar_chat)
